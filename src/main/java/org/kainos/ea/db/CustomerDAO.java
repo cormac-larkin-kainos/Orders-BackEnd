@@ -1,8 +1,7 @@
 package org.kainos.ea.db;
 
-import org.checkerframework.checker.units.qual.C;
+import org.kainos.ea.cli.Customer;
 import org.kainos.ea.cli.CustomerRequest;
-import org.kainos.ea.cli.CustomerResponse;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,10 +12,10 @@ public class CustomerDAO {
     /**
      * Retrieves all customers from the database
      *
-     * @return A list of CustomerResponse objects, representing all the customers in the database
+     * @return A list of Customer objects, representing all the customers in the database
      * @throws SQLException If an error occurs when establishing a database connection
      */
-    public List<CustomerResponse> getAllCustomers() throws SQLException {
+    public List<Customer> getAllCustomers() throws SQLException {
 
         // Establish a database connection
         Connection connection = DatabaseConnector.getConnection();
@@ -25,14 +24,15 @@ public class CustomerDAO {
         }
 
         // Query the database for the details of all customers
-        String selectQuery = "SELECT first_name, last_name, address, phone, email FROM customer";
+        String selectQuery = "SELECT customer_id, first_name, last_name, address, phone, email FROM customer";
         PreparedStatement statement = connection.prepareStatement(selectQuery);
         ResultSet resultSet = statement.executeQuery();
 
-        // Create a list of CustomerResponse objects from the result set
-        List<CustomerResponse> allCustomers = new ArrayList<>();
+        // Create a list of Customer objects from the result set
+        List<Customer> allCustomers = new ArrayList<>();
         while (resultSet.next()) {
-            CustomerResponse customer = new CustomerResponse(
+            Customer customer = new Customer(
+                    resultSet.getInt("customer_id"),
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
                     resultSet.getString("address"),
@@ -51,10 +51,10 @@ public class CustomerDAO {
      * Retrieves a customer with a specified ID from the database
      *
      * @param customerID The ID of the customer to retrieve
-     * @return A CustomerResponse object representing the specified customer, or null if the customer does not exist
+     * @return A Customer object representing the specified customer, or null if the customer does not exist
      * @throws SQLException If a database error occurred
      */
-    public CustomerResponse getCustomerByID(int customerID) throws SQLException {
+    public Customer getCustomerByID(int customerID) throws SQLException {
 
         // Establish a database connection
         Connection connection = DatabaseConnector.getConnection();
@@ -63,14 +63,15 @@ public class CustomerDAO {
         }
 
         // Query the database for the specified customer
-        String selectQuery = "SELECT first_name, last_name, address, phone, email FROM customer WHERE customer_id = ?";
+        String selectQuery = "SELECT customer_id, first_name, last_name, address, phone, email FROM customer WHERE customer_id = ?";
         PreparedStatement statement = connection.prepareStatement(selectQuery);
         statement.setInt(1, customerID);
 
-        // Return a CustomerResponse containing the customer's details
+        // Return a Customer containing the customer's details
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            return new CustomerResponse(
+            return new Customer(
+                    resultSet.getInt("customer_id"),
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
                     resultSet.getString("address"),
@@ -123,8 +124,9 @@ public class CustomerDAO {
 
     /**
      * Updates the details of a customer with a specified customer ID
+     *
      * @param customerID The ID of the customer to update
-     * @param customer A CustomerRequest object containing the updated customer details
+     * @param customer   A CustomerRequest object containing the updated customer details
      * @throws SQLException If a database error occurred
      */
     public void updateCustomer(int customerID, CustomerRequest customer) throws SQLException {
@@ -147,5 +149,28 @@ public class CustomerDAO {
         statement.setInt(6, customerID);
 
         statement.executeUpdate();
+    }
+
+    /**
+     * Deletes a customer with a specified customer ID
+     *
+     * @param customerID The ID of the customer to delete
+     * @throws SQLException If a database error occurred
+     */
+    public void deleteCustomer(int customerID) throws SQLException {
+
+        // Establish a database connection
+        Connection connection = DatabaseConnector.getConnection();
+        if (connection == null) {
+            throw new SQLException("Database connection failed");
+        }
+
+        // Delete the customer with the specified ID
+        String deleteQuery = "DELETE FROM customer WHERE customer_id = ?";
+        PreparedStatement statement = connection.prepareStatement(deleteQuery);
+        statement.setInt(1, customerID);
+
+        statement.executeUpdate();
+
     }
 }

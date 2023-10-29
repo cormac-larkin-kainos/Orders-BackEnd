@@ -6,6 +6,7 @@ import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.kainos.ea.resources.CustomerController;
+import org.kainos.ea.resources.ProductController;
 
 public class DropWizardOrdersAPIApplication extends Application<DropWizardOrdersAPIConfiguration> {
 
@@ -32,6 +33,7 @@ public class DropWizardOrdersAPIApplication extends Application<DropWizardOrders
     public void run(final DropWizardOrdersAPIConfiguration configuration,
                     final Environment environment) {
         environment.jersey().register(new CustomerController());
+        environment.jersey().register(new ProductController());
     }
 
 }

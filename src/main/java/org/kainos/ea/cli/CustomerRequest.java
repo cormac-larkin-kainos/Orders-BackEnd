@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
+/**
+ * Object to hold POST and PUT requests for customer endpoints (Includes all attributes except the 'customerID')
+ */
 public class CustomerRequest {
 
     private String firstName;

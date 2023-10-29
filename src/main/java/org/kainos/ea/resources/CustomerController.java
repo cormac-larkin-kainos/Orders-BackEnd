@@ -3,7 +3,7 @@ package org.kainos.ea.resources;
 import io.swagger.annotations.Api;
 import org.kainos.ea.api.CustomerService;
 import org.kainos.ea.cli.CustomerRequest;
-import org.kainos.ea.cli.CustomerResponse;
+import org.kainos.ea.cli.Customer;
 import org.kainos.ea.client.*;
 
 import javax.ws.rs.*;
@@ -49,7 +49,7 @@ public class CustomerController {
     public Response getCustomerByID(@PathParam("id") int customerID) {
 
         try {
-            CustomerResponse customer = customerService.getCustomerByID(customerID);
+            Customer customer = customerService.getCustomerByID(customerID);
             return Response.ok(customer).build();
         } catch (CustomerDoesNotExistException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -105,6 +105,29 @@ public class CustomerController {
         } catch (CustomerDoesNotExistException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         } catch (FailedToUpdateCustomerException e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
+
+    }
+
+    /**
+     * Deletes a customer with a specified customer ID
+     *
+     * @param customerID The ID of the customer to delete
+     * @return A '204 No Content' response if the customer was successfully deleted.
+     * Returns a '404 Not Found response if the specified customer ID does not exist
+     * Returns a '500 Internal Server Error' response if a database error occurred.
+     */
+    @DELETE
+    @Path("/customers/{id}")
+    public Response deleteCustomer(@PathParam("id") int customerID) {
+
+        try {
+            customerService.deleteCustomer(customerID);
+            return Response.noContent().build();
+        } catch (CustomerDoesNotExistException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        } catch (FailedToDeleteCustomerException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
 

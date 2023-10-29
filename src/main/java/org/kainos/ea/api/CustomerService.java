@@ -1,7 +1,7 @@
 package org.kainos.ea.api;
 
+import org.kainos.ea.cli.Customer;
 import org.kainos.ea.cli.CustomerRequest;
-import org.kainos.ea.cli.CustomerResponse;
 import org.kainos.ea.client.*;
 import org.kainos.ea.client.InvalidCustomerException;
 import org.kainos.ea.core.CustomerValidator;
@@ -17,10 +17,10 @@ public class CustomerService {
     /**
      * Gets all customers from the database
      *
-     * @return A list of CustomerResponse objects, representing all the customers in the database
+     * @return A list of Customer objects, representing all the customers in the database
      * @throws FailedToRetrieveCustomersException If customers could not be retrieved from the database.
      */
-    public List<CustomerResponse> getALlCustomers() throws FailedToRetrieveCustomersException {
+    public List<Customer> getALlCustomers() throws FailedToRetrieveCustomersException {
 
         try {
             return customerDAO.getAllCustomers();
@@ -35,15 +35,15 @@ public class CustomerService {
      *  Retrieves a customer with the specified customer ID from the database.
      *
      * @param customerID The ID of the customer to retrieve.
-     * @return A CustomerResponse object which represents the customer with the specified ID
+     * @return A Customer object which represents the customer with the specified ID
      * @throws CustomerDoesNotExistException If no customer exists with the specified ID
      * @throws FailedToRetrieveCustomerException If an error occurred when retrieving the customer data
      */
-    public CustomerResponse getCustomerByID(int customerID) throws CustomerDoesNotExistException, FailedToRetrieveCustomerException {
+    public Customer getCustomerByID(int customerID) throws CustomerDoesNotExistException, FailedToRetrieveCustomerException {
 
         try {
 
-            CustomerResponse customer = customerDAO.getCustomerByID(customerID);
+            Customer customer = customerDAO.getCustomerByID(customerID);
 
             if (customer == null) {
                 throw new CustomerDoesNotExistException();
@@ -112,6 +112,30 @@ public class CustomerService {
             System.err.println(e.getMessage());
             throw new FailedToUpdateCustomerException();
         }
+    }
+
+    /**
+     * Deletes a customer with a specified customer ID
+     *
+     * @param customerID The ID of the customer to delete
+     * @throws CustomerDoesNotExistException If no customer with the specified ID exists
+     * @throws FailedToDeleteCustomerException If a database error occurred during deletion
+     */
+    public void deleteCustomer(int customerID) throws CustomerDoesNotExistException, FailedToDeleteCustomerException {
+
+        try {
+            // First check if the specified customer exists
+            if (customerDAO.getCustomerByID(customerID) == null) {
+                throw new CustomerDoesNotExistException();
+            }
+
+            // If the customer exists, delete them
+            customerDAO.deleteCustomer(customerID);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new FailedToDeleteCustomerException();
+        }
+
     }
 
 }

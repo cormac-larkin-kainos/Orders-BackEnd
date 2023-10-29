@@ -1,20 +1,30 @@
 package org.kainos.ea.cli;
 
 
-public class CustomerResponse {
+public class Customer {
 
+    private int customerID;
     private String firstName;
     private String lastName;
     private String address;
     private String phone;
     private String email;
 
-    public CustomerResponse(String firstName, String lastName, String address, String phone, String email) {
+    public Customer(int customerID, String firstName, String lastName, String address, String phone, String email) {
+        this.customerID = customerID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phone = phone;
         this.email = email;
+    }
+
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
     }
 
     public String getFirstName() {
