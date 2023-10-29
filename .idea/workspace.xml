@@ -5,30 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b522e166-94da-4231-9398-0537a8b77a63" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.github/build.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropWizardOrdersAPIApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropWizardOrdersAPIConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/CustomerService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/cli/CustomerRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/cli/CustomerResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/CustomerDoesNotExistException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToCreateCustomerException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToRetrieveCustomerException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToRetrieveCustomersException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/InvalidCustomerException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/core/CustomerValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/CustomerDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/DatabaseConnector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/CustomerController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/banner.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToUpdateCustomerException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/CustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/core/CustomerValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/core/CustomerValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/CustomerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/CustomerDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/CustomerController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,9 +31,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2XOoBG2lurGtd1RfVRd2nSPG7RG" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -59,13 +42,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/cormac.larkin/IdeaProjects/DropWizardOrdersAPI&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.kainos.ea.client" />

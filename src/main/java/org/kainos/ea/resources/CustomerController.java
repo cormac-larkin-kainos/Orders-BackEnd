@@ -19,7 +19,7 @@ public class CustomerController {
     /**
      * Returns a JSON response with the details of all customers
      *
-     * @return A 200 OK response and a list of all customers, or a 500 Internal Server response
+     * @return A '200 OK' response and a list of all customers, or a '500 Internal Server' response
      * if an error occurred when retrieving the customers
      */
     @GET
@@ -35,6 +35,14 @@ public class CustomerController {
 
     }
 
+    /**
+     * Retrieves a specific customer
+     *
+     * @param customerID The ID of the customer to retrieve
+     * @return A '200 OK' response and the customer details, or a
+     * '500 Internal Server Error' response if a database error occurred.
+     * Returns '404 Not Found' if no customer with the specified ID exists
+     */
     @GET
     @Path("customers/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,11 +54,19 @@ public class CustomerController {
         } catch (CustomerDoesNotExistException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } catch (FailedToRetrieveCustomerException e) {
-            return Response.serverError().build();
+            return Response.serverError().entity(e.getMessage()).build();
         }
 
     }
 
+    /**
+     * Creates a new Customer and returns their customer ID
+     *
+     * @param customer The customer to create
+     * @return A '200 OK' response containing the customer ID of the newly created customer.
+     * If invalid customer details were supplied, returns a '400 Bad Request' response.
+     * If a database error occurred and the customer could not be created, returns a '500 Internal Server Error' response.
+     */
     @POST
     @Path("/customers")
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,6 +77,34 @@ public class CustomerController {
         } catch (InvalidCustomerException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (FailedToCreateCustomerException e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
+
+    }
+
+    /**
+     * Updates the details of a customer with a specified customer ID
+     *
+     * @param customerID The ID of the customer to update
+     * @param customer A CustomerRequest object containing the customer's new details
+     * @return A '204 No Content' response if the customer was successfully updated.
+     * Returns a '400 Bad Request' response if the supplied customer details failed validation.
+     * Returns a '404 Not Found' response if no customer with the specified ID exists.
+     * Returns a '500 Internal Server Error' response if a database error occurred.
+     */
+    @PUT
+    @Path("/customers/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCustomer(@PathParam("id") int customerID, CustomerRequest customer) {
+
+        try {
+            customerService.updateCustomer(customerID, customer);
+            return Response.noContent().build();
+        } catch (InvalidCustomerException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (CustomerDoesNotExistException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        } catch (FailedToUpdateCustomerException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
 

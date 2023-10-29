@@ -47,6 +47,13 @@ public class CustomerDAO {
 
     }
 
+    /**
+     * Retrieves a customer with a specified ID from the database
+     *
+     * @param customerID The ID of the customer to retrieve
+     * @return A CustomerResponse object representing the specified customer, or null if the customer does not exist
+     * @throws SQLException If a database error occurred
+     */
     public CustomerResponse getCustomerByID(int customerID) throws SQLException {
 
         // Establish a database connection
@@ -112,5 +119,33 @@ public class CustomerDAO {
 
         // Return -1 if no customer ID was returned (error occurred during insertion)
         return -1;
+    }
+
+    /**
+     * Updates the details of a customer with a specified customer ID
+     * @param customerID The ID of the customer to update
+     * @param customer A CustomerRequest object containing the updated customer details
+     * @throws SQLException If a database error occurred
+     */
+    public void updateCustomer(int customerID, CustomerRequest customer) throws SQLException {
+
+        // Establish a database connection
+        Connection connection = DatabaseConnector.getConnection();
+        if (connection == null) {
+            throw new SQLException("Database connection failed");
+        }
+
+        // Update the details for the customer with the specified ID
+        String updateQuery = "UPDATE customer SET first_name = ?, last_name = ?, address = ?, phone = ?, email = ?" +
+                "WHERE customer_id = ?";
+        PreparedStatement statement = connection.prepareStatement(updateQuery);
+        statement.setString(1, customer.getFirstName());
+        statement.setString(2, customer.getLastName());
+        statement.setString(3, customer.getAddress());
+        statement.setString(4, customer.getPhone());
+        statement.setString(5, customer.getEmail());
+        statement.setInt(6, customerID);
+
+        statement.executeUpdate();
     }
 }

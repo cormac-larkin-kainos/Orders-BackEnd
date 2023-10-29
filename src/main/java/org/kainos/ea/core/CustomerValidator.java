@@ -11,7 +11,8 @@ public class CustomerValidator {
      * Validates the data in a CustomerRequest object
      *
      * @param customer The customer to validate
-     * @return true if the customer passed all validation checks, otherwise false
+     * @return Null if the customer passed all validation checks, otherwise returns a
+     * String which specifies the validation errors to fix.
      */
     public static String validateCustomer(CustomerRequest customer) {
 

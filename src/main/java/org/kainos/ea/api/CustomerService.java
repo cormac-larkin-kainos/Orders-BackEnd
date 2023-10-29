@@ -31,6 +31,14 @@ public class CustomerService {
 
     }
 
+    /**
+     *  Retrieves a customer with the specified customer ID from the database.
+     *
+     * @param customerID The ID of the customer to retrieve.
+     * @return A CustomerResponse object which represents the customer with the specified ID
+     * @throws CustomerDoesNotExistException If no customer exists with the specified ID
+     * @throws FailedToRetrieveCustomerException If an error occurred when retrieving the customer data
+     */
     public CustomerResponse getCustomerByID(int customerID) throws CustomerDoesNotExistException, FailedToRetrieveCustomerException {
 
         try {
@@ -50,6 +58,15 @@ public class CustomerService {
 
     }
 
+    /**
+     * Creates a new customer in the database
+     *
+     * @param customer The customer to create
+     * @return The customer ID of the newly created customer
+     * @throws InvalidCustomerException If the customers details failed validation
+     * @throws FailedToCreateCustomerException If a database error occurred when creating the customer
+     * @see CustomerValidator
+     */
     public int createCustomer(CustomerRequest customer) throws InvalidCustomerException, FailedToCreateCustomerException {
 
         // Validate the CustomerRequest before attempting to add the new customer
@@ -66,5 +83,35 @@ public class CustomerService {
         }
     }
 
+    /**
+     * Updates the details of a customer with a specified customer ID
+     *
+     * @param customerID The ID of the customer to update
+     * @param customer A CustomerRequest object containing the customer's new details
+     * @throws InvalidCustomerException If the supplied customer details failed validation
+     * @throws CustomerDoesNotExistException If no customer with the specified customer ID exists
+     * @throws FailedToUpdateCustomerException If a database error occurred
+     * @see CustomerValidator
+     */
+    public void updateCustomer(int customerID, CustomerRequest customer) throws InvalidCustomerException, CustomerDoesNotExistException, FailedToUpdateCustomerException {
+
+        try {
+            // First, check if the specified customer exists
+            if (customerDAO.getCustomerByID(customerID) == null) {
+                throw new CustomerDoesNotExistException();
+            }
+
+            // If they exist, validate the new customer details
+            String validationError = CustomerValidator.validateCustomer(customer);
+            if (validationError != null) {
+                throw new InvalidCustomerException(validationError);
+            }
+
+            customerDAO.updateCustomer(customerID, customer);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new FailedToUpdateCustomerException();
+        }
+    }
 
 }
