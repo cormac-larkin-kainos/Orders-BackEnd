@@ -2,10 +2,13 @@ package org.kainos.ea.resources;
 
 import io.swagger.annotations.Api;
 import org.kainos.ea.api.ProductService;
+import org.kainos.ea.client.FailedToRetrieveProductException;
 import org.kainos.ea.client.FailedToRetrieveProductsException;
+import org.kainos.ea.client.ProductDoesNotExistException;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -30,6 +33,29 @@ public class ProductController {
         try {
             return Response.ok(productService.getAllProducts()).build();
         } catch (FailedToRetrieveProductsException e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
+
+    }
+
+    /**
+     * Gets a product with a specified product ID from the database
+     *
+     * @param productID The ID of the product to retrieve from the database
+     * @return A '200 OK' response and a ProductResponse object representing the specified product.
+     * Returns a '404 Not Found' response if the specified product ID does not exist
+     * Returns a '500 Internal Server Error' if a database error occurred
+     */
+    @GET
+    @Path("/products/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductByID(@PathParam("id") int productID) {
+
+        try {
+            return Response.ok(productService.getProductByID(productID)).build();
+        } catch (ProductDoesNotExistException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        } catch (FailedToRetrieveProductException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
 

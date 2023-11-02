@@ -1,7 +1,9 @@
 package org.kainos.ea.api;
 
 import org.kainos.ea.cli.ProductResponse;
+import org.kainos.ea.client.FailedToRetrieveProductException;
 import org.kainos.ea.client.FailedToRetrieveProductsException;
+import org.kainos.ea.client.ProductDoesNotExistException;
 import org.kainos.ea.db.ProductDAO;
 
 import java.sql.SQLException;
@@ -24,6 +26,31 @@ public class ProductService {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             throw new FailedToRetrieveProductsException();
+        }
+
+    }
+
+    /**
+     * Gets a product with a specified product ID from the database
+     *
+     * @param productID The ID of the product to retrieve
+     * @return A ProductResponse object which represents the specified product
+     * @throws ProductDoesNotExistException If no product with the specified product ID exists
+     * @throws FailedToRetrieveProductException If a database error occurred
+     */
+    public ProductResponse getProductByID(int productID) throws ProductDoesNotExistException, FailedToRetrieveProductException {
+
+        try {
+            ProductResponse product = productDAO.getProductByID(productID);
+
+            if (product == null) {
+                throw new ProductDoesNotExistException();
+            }
+
+            return product;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new FailedToRetrieveProductException();
         }
 
     }
