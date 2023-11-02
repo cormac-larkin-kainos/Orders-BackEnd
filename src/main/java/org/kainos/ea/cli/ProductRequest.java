@@ -1,5 +1,8 @@
 package org.kainos.ea.cli;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Object to hold PUT and POST requests for products (includes all attributes except the 'productID')
  */
@@ -10,7 +13,13 @@ public class ProductRequest {
     private double price;
     private int supplierID;
 
-    public ProductRequest(String name, String description, double price, int supplierID) {
+    @JsonCreator
+    public ProductRequest(
+            @JsonProperty("name") String name,
+            @JsonProperty("description") String description,
+            @JsonProperty("price") double price,
+            @JsonProperty("supplierID") int supplierID
+    ) {
         this.name = name;
         this.description = description;
         this.price = price;

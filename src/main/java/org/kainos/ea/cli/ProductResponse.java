@@ -1,5 +1,7 @@
 package org.kainos.ea.cli;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public class ProductResponse {
 
     private int productID;

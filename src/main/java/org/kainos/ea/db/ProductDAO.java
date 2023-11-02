@@ -1,11 +1,9 @@
 package org.kainos.ea.db;
 
+import org.kainos.ea.cli.ProductRequest;
 import org.kainos.ea.cli.ProductResponse;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,8 +67,8 @@ public class ProductDAO {
                 "supplier.name AS supplier_name FROM product INNER JOIN supplier " +
                 "USING(supplier_id) WHERE product_id = ?";
 
+        // Create PreparedStatement and set the product ID parameter
         PreparedStatement statement = connection.prepareStatement(selectQuery);
-
         statement.setInt(1, productID);
 
         ResultSet result = statement.executeQuery();
@@ -88,6 +86,47 @@ public class ProductDAO {
         }
 
         return null;
+
+    }
+
+    /**
+     * Creates a new product in the database and returns its product ID
+     *
+     * @param product The product to create
+     * @return The Product ID of the newly created product
+     * @throws SQLException If a database error occurred
+     */
+    public int createProduct(ProductRequest product) throws SQLException {
+
+        // Establish a database connection
+        Connection connection = DatabaseConnector.getConnection();
+        if (connection == null) {
+            throw new SQLException("Database connection failed");
+        }
+
+        // Create a PreparedStatement to insert the new product and return the product ID
+        String insertQuery = "INSERT INTO product (name, description, price, supplier_id) VALUES (?, ?, ?, ?)";
+
+        PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+        statement.setString(1, product.getName());
+        statement.setString(2, product.getDescription());
+        statement.setDouble(3, product.getPrice());
+        statement.setInt(4, product.getSupplierID());
+
+        statement.executeUpdate();
+
+        ResultSet result = statement.getGeneratedKeys();
+
+        // Return the ID of the newly created product
+        if (result.next()) {
+            return result.getInt(1);
+        }
+
+        // Return -1 if no product ID was returned (error occurred during insertion)
+        return -1;
+
+
 
     }
 

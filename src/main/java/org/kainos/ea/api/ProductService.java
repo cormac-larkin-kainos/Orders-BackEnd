@@ -1,9 +1,10 @@
 package org.kainos.ea.api;
 
+import org.kainos.ea.cli.ProductRequest;
 import org.kainos.ea.cli.ProductResponse;
-import org.kainos.ea.client.FailedToRetrieveProductException;
-import org.kainos.ea.client.FailedToRetrieveProductsException;
-import org.kainos.ea.client.ProductDoesNotExistException;
+import org.kainos.ea.client.*;
+import org.kainos.ea.core.CustomerValidator;
+import org.kainos.ea.core.ProductValidator;
 import org.kainos.ea.db.ProductDAO;
 
 import java.sql.SQLException;
@@ -51,6 +52,32 @@ public class ProductService {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             throw new FailedToRetrieveProductException();
+        }
+
+    }
+
+    /**
+     * Creates a new product and returns its product ID
+     *
+     * @param product The new product to create
+     * @return The Product ID of the newly created product
+     * @throws InvalidProductException If the supplied product details failed validation
+     * @throws FailedToCreateProductException If a database error occurred
+     */
+    public int createProduct(ProductRequest product) throws InvalidProductException, FailedToCreateProductException {
+
+        // Validate the ProductRequest before attempting to add the new product
+        String validationErrorMessage = ProductValidator.validateProduct(product);
+
+        if (validationErrorMessage != null) {
+            throw new InvalidProductException(validationErrorMessage);
+        }
+
+        try {
+            return productDAO.createProduct(product);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new FailedToCreateProductException();
         }
 
     }
