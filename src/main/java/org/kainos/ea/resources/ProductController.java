@@ -2,14 +2,11 @@ package org.kainos.ea.resources;
 
 import io.swagger.annotations.Api;
 import org.kainos.ea.api.ProductService;
-import org.kainos.ea.client.FailedToRetrieveProductException;
-import org.kainos.ea.client.FailedToRetrieveProductsException;
-import org.kainos.ea.client.ProductDoesNotExistException;
+import org.kainos.ea.cli.ProductRequest;
+import org.kainos.ea.cli.ProductResponse;
+import org.kainos.ea.client.*;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -58,6 +55,23 @@ public class ProductController {
         } catch (FailedToRetrieveProductException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
+
+    }
+
+    @POST
+    @Path("/products")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createProduct(ProductRequest product) {
+
+
+        try {
+            return Response.ok(productService.createProduct(product)).build();
+        } catch (InvalidProductException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (FailedToCreateProductException e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
+
 
     }
 
